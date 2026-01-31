@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Firebase EmailAndPassword</title>
+  <title>Firebase Authentication</title>
 </head>
 <body>
   
@@ -31,8 +31,39 @@
   const analytics = getAnalytics(app);
 </script>
 
-  
+   // Google provider
+    const provider = new GoogleAuthProvider();
 
+    // Login with Google
+    document.getElementById("googleLoginBtn").addEventListener("click", () => {
+      signInWithPopup(auth, provider)
+        .then(result => {
+          const user = result.user;
+          alert("Logged in as: " + user.displayName + " (" + user.email + ")");
+        })
+        .catch(error => {
+          alert("Error: " + error.message);
+        });
+    });
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      signOut(auth).then(() => {
+        alert("Logged out");
+      }).catch(error => {
+        alert("Error: " + error.message);
+      });
+    });
+
+    // Track login state
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        console.log("User is logged in:", user.displayName, user.email);
+      } else {
+        console.log("No user logged in");
+      }
+    });
+</script>
 </body>
 </html>
 
